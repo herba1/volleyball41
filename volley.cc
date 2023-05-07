@@ -3,6 +3,8 @@
 #include<string>
 #include<fstream>
 #include<vector>
+#include"/public/colors.h"
+#include"/public/read.h"
 using namespace std;
 
 int main(){
@@ -31,29 +33,57 @@ int main(){
 		}
 		fs.close();
 	}
-	
-	for (int i = 0; i < qaDB.size(); i++){
-		cout << qaDB.at(i) << endl;
-		if ((i+1)%5 == 0) cout << endl;
-	}
 
-	/*while (true){
-	  string input;
-	  cout << "whats 9+10 ?" << endl;
-	  if (turn == 0){
-	  cout << "PLAYER 1 says: " << endl;
-	  cin >> input;
-	  if (input == "21") cout << "good job \n";
-	  else cout << "wrong!" << endl;
-	  turn = 1;
-	  }	
-	  if (turn == 1){
-	  cout << "PLAYER 2 says: " << endl;
-	  cin >> input;
-	  if (input == "21") cout << "good job \n";
-	  else cout << "wrong!" << endl;
-	  turn = 0;
-	  }	
+	/*for (int i = 0; i < qaDB.size(); i++){
+	  cout << qaDB.at(i) << endl;
+	  if ((i+1)%5 == 0) cout << endl;
 	  }*/
+			cin.ignore();
+	int qSet = 0;// by intervals of 4 because 5 things per question
+	while (true){
+		if (qSet >= qaDB.size()){
+			cout << "NO ONE WINS OUT OF QUESTIONS SORRY" << endl;
+			exit(1);
+		}
+		string input;
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		cout << qaDB.at(qSet) << endl;
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		cout << qaDB.at(qSet+1) << endl;
+		cout << qaDB.at(qSet+2) << endl;
+		cout << qaDB.at(qSet+3) << endl;
+		cout << qaDB.at(qSet+4) << endl;
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		if (turn == 0){
+			cout << "PLAYER 1 says: " << endl;
+			getline(cin,input);
+			if (input == (qaDB.at(qSet+1))){ 
+				cout << GREEN << "good job PLAYER 1\n\n" << WHITE << endl;
+				qSet+=5;
+
+			}
+			else cout << RED << "wrong!" << WHITE << endl;
+			turn = 1;
+		}	
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		cout << qaDB.at(qSet) << endl;
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		cout << qaDB.at(qSet+1) << endl;
+		cout << qaDB.at(qSet+2) << endl;
+		cout << qaDB.at(qSet+3) << endl;
+		cout << qaDB.at(qSet+4) << endl;
+		cout << YELLOW << "--------------------------------------" << WHITE << endl;
+		if (turn == 1){
+			cout << "PLAYER 2 says: " << endl;
+			getline(cin,input);
+			if (input == (qaDB.at(qSet+1))){ 
+				cout << GREEN << "good job PLAYER 2 \n\n"<< WHITE <<endl;
+				qSet+=5;
+
+			}
+			else cout << RED << "wrong!" << WHITE << endl;
+			turn = 0;
+		}	
+	}
 
 }
