@@ -1,5 +1,6 @@
 #include <iostream>
 #include "/public/colors.h"
+#include <cstdlib>
 using namespace std;
 
 const int BOARD = 10;
@@ -82,7 +83,7 @@ void updateBoard2(int row, int col) {
 
 void battle() {
 player1_board();
-     while (true) {
+while (true) {
 		if (hits == 12) { 
 		cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
 		cin.ignore();
@@ -94,18 +95,16 @@ player1_board();
 		exit(1);
 		}
 		char choice1;
-		cout << "Enter a row to hit a ship" << endl;
+		cout << "Enter a row to hit a ship: " << endl;
 		cin >> choice1;
-		//if (choice1.length() != 1 or (!isalpha(choice1[0]) or (toupper(choice1[0]) < 'A' or toupper(choice1[0]) > 'J'))) {
 		//	cout << "ERROR, MUST USE VALID CHAR" << endl;
 		//	continue;
-	//	}
 		int choice2;
-		cout << "Enter a col to hit a ship" << endl;
+		cout << "Enter a col to hit a ship: " << endl;
 		cin >> choice2;
 		int row = choice1 - 'A'; 
         int col = choice2 - 1;    // convert column number to index
-        cout << "Your coordinates are: " << choice1 << choice2 << endl;
+        cout << "Your cordinates are: " << choice1 << choice2 << endl;
        	cin.ignore();
 		updateBoard(row, col);
 		 }
@@ -117,5 +116,7 @@ void battle2() {
 
 int main() {
 	//player1_board(board);
+	// system("echo '\n\x1b[1;35m'; figlet 'WELCOME TO BATTLESHIP'; echo  '\x1b[0m\n'");
+	 system("figlet 'WELCOME TO BATTLESHIP' | lolcat");
 	battle();
 }
