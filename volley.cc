@@ -4,11 +4,45 @@
 #include<string>
 #include<fstream>
 #include<vector>
+#include<algorithm>
+#include<ctime>
 #include"/public/colors.h"
 #include"/public/read.h"
 using namespace std;
 using namespace std::chrono;
+
+int myrandom (int i) { return rand()%i;}//cpp ref code for random
+
+void print_Questions(vector<string> &vec, int x){
+	cout << YELLOW << "--------------------------------------" << WHITE << endl;
+	for(int i = 0; i < vec.at(x).size(); i++){
+		if (vec.at(x).at(i) == 'n' and vec.at(x).at(i-1) == '\\' ){
+			cout << endl;
+		}
+		else if (vec.at(x).at(i) == '\\' and vec.at(x).at(i+1) == 'n' ){
+			continue;
+		}
+
+		else cout << vec.at(x).at(i);
+	}
+	cout << endl;
+	vector<int> random{1,2,3,4};
+	random_shuffle(random.begin(),random.end(),myrandom);
+	int r = random.at(0);
+	int r2 = random.at(1);
+	int r3 = random.at(2);
+	int r4 = random.at(3);
+	cout << YELLOW << "--------------------------------------" << WHITE << endl;
+	cout << vec.at(x+r) << endl;
+	cout << vec.at(x+r2) << endl;
+	cout << vec.at(x+r3) << endl;
+	cout << vec.at(x+r4) << endl;
+	cout << YELLOW << "--------------------------------------" << WHITE << endl;
+
+}
+
 int main(){
+	srand ( unsigned ( time(0) ) );	//cpp ref code
 	vector<string> qaDB;
 	int turn = 0;
 	cout << "enter a file " << endl;
@@ -33,17 +67,15 @@ int main(){
 			qaDB.push_back(ans4);
 		}
 		fs.close();
-	}
+	}// ALL FOR INPUT FILE
+
+
 	duration<float> time {60s};//VARIABLE TO SAVE TIME DURATION SET TO 60 INITIALLY
-	cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
-	/*for (int i = 0; i < qaDB.size(); i++){
-	  cout << qaDB.at(i) << endl;
-	  if ((i+1)%5 == 0) cout << endl;
-	  }*/
 	cin.ignore();
 	int qSet = 0;// by intervals of 5 because 5 things per question used to use vec.at(qSet)
 	int pts = 0;//used to check who right answers first
 	int pts2 = 0;//used to check who right answers first
+
 	while (true){
 		auto start = system_clock::now();//start Player 1 time
 		if (qSet >= qaDB.size()){//Make sure question set doesnt go out of bounds
@@ -51,16 +83,7 @@ int main(){
 			exit(1);
 		}
 		string input;
-
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		cout << qaDB.at(qSet) << endl;
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		cout << qaDB.at(qSet+1) << endl;
-		cout << qaDB.at(qSet+2) << endl;
-		cout << qaDB.at(qSet+3) << endl;
-		cout << qaDB.at(qSet+4) << endl;
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		
+		print_Questions(qaDB,qSet);
 		if (turn == 0){
 			cout << "PLAYER 1 says: " << endl;
 			getline(cin,input);
@@ -79,16 +102,9 @@ int main(){
 		if (time < dur and pts2 > 0){cout << "u answered out of time noob" << endl; break;}// If P1 time was longer than saved time after someone answerd correctly first fail him
 		time = dur;// else save Player 1 time
 		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
-		
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		cout << qaDB.at(qSet) << endl;
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		cout << qaDB.at(qSet+1) << endl;
-		cout << qaDB.at(qSet+2) << endl;
-		cout << qaDB.at(qSet+3) << endl;
-		cout << qaDB.at(qSet+4) << endl;
-		cout << YELLOW << "--------------------------------------" << WHITE << endl;
-		
+
+		print_Questions(qaDB,qSet);
+
 		auto start2 = system_clock::now();//start Player 2 Time
 		if (turn == 1){
 			cout << "PLAYER 2 says: " << endl;
