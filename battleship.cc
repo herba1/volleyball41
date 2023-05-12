@@ -1,8 +1,11 @@
 #include <iostream>
-#include "/public/colors.h"
+#include "colors.h"
 #include <cstdlib>
 #include <ctime>
+
+
 using namespace std;
+
 
 const int BOARD = 10;
 int COL[BOARD] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};

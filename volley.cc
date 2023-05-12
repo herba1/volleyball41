@@ -1,43 +1,96 @@
-#include<iostream>
-#include<chrono>
-#include<sstream>
-#include<string>
-#include<fstream>
-#include<vector>
-#include<algorithm>
-#include<ctime>
-#include"/public/colors.h"
-#include"/public/read.h"
+#include <algorithm>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <random>
+#include <chrono>
+#include <string>
+#include <vector>
+#include <ctime>
+ 
+#include "colors.h"
+#include "read.h"
+
 using namespace std;
 using namespace std::chrono;
 
-int myrandom (int i) { return rand()%i;}//cpp ref code for random
+// Function prototypes
+// int myrandom (const int &i);
+int volley(vector<string> &qaDB, int &qSet);
+void print_Questions(vector<string> &vec, int x);
+
+// Please make a question class, this would make things a lot easier instead of these offests of five thing for the vectors of strings..
+// You have a alot of work to do..
+// Added colors.h and read.h to local directories..
+// - Alex~
+
+int main(){
+	srand (time(0));	//cpp ref code
+	vector<string> qaDB;
+	// Why? there's only one question database..
+	// const string file = read("enter a file\n");
+
+	ifstream fs("questions.txt");
+	if (!fs){ cout << "error " << endl; exit(1);}
+	if (fs.is_open()){
+		while (!fs.eof()){
+			string question; string ans1; string ans2; string ans3; string ans4;string trash;
+			getline(fs,question);
+			if (question == "")break;
+			getline(fs,ans1);
+			getline(fs,ans2);
+			getline(fs,ans3);
+			getline(fs,ans4);
+			getline(fs,trash);//get empty line
+			qaDB.push_back(question);
+			qaDB.push_back(ans1);
+			qaDB.push_back(ans2);
+			qaDB.push_back(ans3);
+			qaDB.push_back(ans4);
+		}
+		fs.close();
+	}// ALL FOR INPUT FILE
+
+
+	// cin.ignore();
+	int qSet = 0;// by intervals of 5 because 5 things per question used to use vec.at(qSet)
+	// You need to fix that, I tired fixing it but it would be way to much..
+
+	int outcome = 0;
+	outcome = volley(qaDB,qSet);
+	if (outcome == 2) cout << "Player 2 gets 3 shots" << endl;
+	else if (outcome == 1) cout << "Player 1 gets 3 shots" << endl;
+	else if (outcome == -1) cout << "DRAW" << endl;
+
+
+}
+
+// int myrandom (const int &i) { return rand()%i;}//cpp ref code for random
 
 void print_Questions(vector<string> &vec, int x){
-	cout << YELLOW << "--------------------------------------" << WHITE << endl;
+	cout << YELLOW << "--------------------------------------" << RESET << endl;
 	for(int i = 0; i < vec.at(x).size(); i++){
-		if (vec.at(x).at(i) == 'n' and vec.at(x).at(i-1) == '\\' ){
-			cout << endl;
-		}
-		else if (vec.at(x).at(i) == '\\' and vec.at(x).at(i+1) == 'n' ){
-			continue;
-		}
-
+		if (vec.at(x).at(i) == 'n' and vec.at(x).at(i-1) == '\\' ) cout << endl;
+		else if (vec.at(x).at(i) == '\\' and vec.at(x).at(i+1) == 'n' ) continue;
 		else cout << vec.at(x).at(i);
 	}
 	cout << endl;
 	vector<int> random{1,2,3,4};
-	random_shuffle(random.begin(),random.end(),myrandom);
+	// This is my way of doing randoms.. 
+	std::random_device generator;
+	std::mt19937 dist(generator());
+	std::shuffle(random.begin(),random.end(),dist);
 	int r = random.at(0);
 	int r2 = random.at(1);
 	int r3 = random.at(2);
 	int r4 = random.at(3);
-	cout << YELLOW << "--------------------------------------" << WHITE << endl;
-	cout << vec.at(x+r) << endl;
-	cout << vec.at(x+r2) << endl;
-	cout << vec.at(x+r3) << endl;
-	cout << vec.at(x+r4) << endl;
-	cout << YELLOW << "--------------------------------------" << WHITE << endl;
+	// I made it look nicer..
+	cout << YELLOW << "--------------------------------------" << RESET << endl;
+	cout << GREEN << "1. "<< WHITE << vec.at(x+r) << endl;
+	cout << RED << "2. " << WHITE <<vec.at(x+r2) << endl;
+	cout << BLUE << "3. " << WHITE << vec.at(x+r3) << endl;
+	cout << YELLOW << "4. " << WHITE << vec.at(x+r4) << endl;
+	cout << YELLOW << "--------------------------------------" << RESET << endl;
 
 }
 
@@ -97,45 +150,5 @@ int volley(vector<string> &qaDB, int &qSet){
 		time = dur2; // save P2 Time
 		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
 	}
-
-}
-
-int main(){
-	srand ( unsigned ( time(0) ) );	//cpp ref code
-	vector<string> qaDB;
-	cout << "enter a file " << endl;
-	string file;
-	cin >> file;
-	ifstream fs(file);
-	if (!fs){ cout << "error " << endl; exit(1);}
-	if (fs.is_open()){
-		while (!fs.eof()){
-			string question; string ans1; string ans2; string ans3; string ans4;string trash;
-			getline(fs,question);
-			if (question == "")break;
-			getline(fs,ans1);
-			getline(fs,ans2);
-			getline(fs,ans3);
-			getline(fs,ans4);
-			getline(fs,trash);//get empty line
-			qaDB.push_back(question);
-			qaDB.push_back(ans1);
-			qaDB.push_back(ans2);
-			qaDB.push_back(ans3);
-			qaDB.push_back(ans4);
-		}
-		fs.close();
-	}// ALL FOR INPUT FILE
-
-
-	cin.ignore();
-	int qSet = 0;// by intervals of 5 because 5 things per question used to use vec.at(qSet)
-
-	int outcome = 0;
-	outcome = volley(qaDB,qSet);
-	if (outcome == 2) cout << "Player 2 gets 3 shots" << endl;
-	else if (outcome == 1) cout << "Player 1 gets 3 shots" << endl;
-	else if (outcome == -1) cout << "DRAW" << endl;
-
 
 }
