@@ -36,7 +36,24 @@ cout << "  ";
 			cout << endl;
 		}
 	}
-
+void printBoard2() {
+void printBoard() {
+cout << "  ";
+    for (int col = 0; col < BOARD; col++) {
+        cout << GREEN << COL[col] << WHITE << " ";
+    }
+        cout << endl;
+    for (int i = 0; i < BOARD; i++) {
+            cout << YELLOW < ROW[i] << WHITE << " ";
+            for (int j = 0; j < BOARD; j++) {
+                if (board2[i][j] == '*') {
+                    cout << GREEN << "* " << WHITE;
+                } else { cout << "- "; }
+            }
+            cout << endl;
+        }
+    }
+}
 
 void set_ship1() {
 	string Carrier;
