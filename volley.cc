@@ -73,7 +73,7 @@ int volley(vector<string> &qaDB, int &qSet){
 		duration<float> dur = end - start;// Save Player 1 Time
 		if (time < dur and pts2 > 0){cout << "u answered out of time noob" << endl; return 2;}// If P1 time was longer than saved time after someone answerd correctly first fail him
 		time = dur;// else save Player 1 time
-		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
+		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << " seconds" << endl;
 
 		print_Questions(qaDB,qSet);
 
@@ -93,7 +93,7 @@ int volley(vector<string> &qaDB, int &qSet){
 		}	
 		auto end2 = system_clock::now();//end player 2 time
 		duration<float> dur2 = end2 - start2;// save P2 time
-		if (dur2 > time and pts > 0){ cout << "u ansard out of time" << endl; return 1;}
+		if (dur2 > time and pts > 0){ cout << "u ansard out of time" << " seconds" << endl; return 1;}
 		time = dur2; // save P2 Time
 		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
 	}
@@ -131,7 +131,7 @@ int main(){
 	cin.ignore();
 	int qSet = 0;// by intervals of 5 because 5 things per question used to use vec.at(qSet)
 
-	int outcome = -1;
+	int outcome = 0;
 	outcome = volley(qaDB,qSet);
 	if (outcome == 2) cout << "Player 2 gets 3 shots" << endl;
 	else if (outcome == 1) cout << "Player 1 gets 3 shots" << endl;
