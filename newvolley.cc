@@ -15,9 +15,7 @@ using namespace std;
 using namespace std::chrono;
 
 
-// Please make a question class, this would make things a lot easier instead of these offests of five thing for the vectors of strings..
-// You have a alot of work to do..
-// Added colors.h and read.h to local directories..
+// Thanks for taking the advice, code looks good now!
 // - Alex~
 class questionSet{
 	private:
@@ -39,7 +37,8 @@ class questionSet{
 };
 
 // Function prototypes
-// int myrandom (const int &i);
+template<typename T>
+void shuffle_vector(vector<T> &vec);
 int volley(vector<questionSet> &qaDB, int &qSet);
 int print_Questions(vector<questionSet> &vec, int x);
 
@@ -66,9 +65,8 @@ int main(){
 		}
 		fs.close();
 	}// ALL FOR INPUT FILE
-	std::random_device generator;
-	std::mt19937 dist(generator());
-	std::shuffle(qaDB.begin(),qaDB.end(),dist); // used betancourt randomnizer on the entire question set to get unique questions every new run
+	shuffle_vector(qaDB);
+	// used betancourt randomnizer on the entire question set to get unique questions every new run
 
 	int qSet = 0;// used to traverse the question DB
 
@@ -85,7 +83,7 @@ int main(){
 
 }
 
-
+// You could make this a member of the questionSet class..
 int print_Questions(vector<questionSet> &vec, int x){
 	cout << YELLOW << "--------------------------------------" << RESET << endl;
 	for(int i = 0; i < vec.at(x).get_q().size(); i++){
@@ -96,9 +94,7 @@ int print_Questions(vector<questionSet> &vec, int x){
 	cout << endl;
 	vector<int> random{1,2,3,4};
 	// This is my way of doing randoms.. 
-	std::random_device generator;
-	std::mt19937 dist(generator());
-	std::shuffle(random.begin(),random.end(),dist);
+	shuffle_vector(random);
 	int r = random.at(0);
 	int r2 = random.at(1);
 	int r3 = random.at(2);
@@ -142,12 +138,13 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 			cout << "NO ONE WINS OUT OF QUESTIONS SORRY" << endl;
 			return 0;
 		}
-		string input;
+		int input;
 		correct  = print_Questions(qaDB,qSet);
 		if (turn == 0){
 			cout << "PLAYER 1 says: " << endl;
-			getline(cin,input);
-			if (stoi(input) == correct){ 
+			// Use read, you don't have to stoi
+			input = read();
+			if (input == correct){ 
 				cout << GREEN << "good job PLAYER 1\n\n" << WHITE << endl;
 				qSet++;//If correct move vector up 1 to next question set This is so i can reshuffle the vector and q and A's
 				pts++;// activate the timer after someone gets a questions right
@@ -171,8 +168,9 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 		auto start2 = system_clock::now();//start Player 2 Time
 		if (turn == 1){
 			cout << "PLAYER 2 says: " << endl;
-			getline(cin,input);
-			if (stoi(input) == correct){ 
+			// Use read, you don't have to stoi
+			input = read();;
+			if (input == correct){ 
 				cout << GREEN << "good job PLAYER 2 \n\n"<< WHITE <<endl;
 				qSet++;
 				pts2++;//same as above
@@ -191,3 +189,9 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 
 }
 
+template<typename T>
+void shuffle_vector(vector<T> &vec) {
+	std::random_device generator;
+	std::mt19937 dist(generator());
+	std::shuffle(vec.begin(),vec.end(),dist);
+}
