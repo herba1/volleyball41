@@ -1,9 +1,7 @@
 #include <iostream>
 #include "colors.h"
 #include <cstdlib>
-#include <ctime>
-
-
+#include <vector>
 using namespace std;
 
 
@@ -37,14 +35,13 @@ cout << "  ";
 		}
 	}
 void printBoard2() {
-void printBoard() {
 cout << "  ";
     for (int col = 0; col < BOARD; col++) {
-        cout << GREEN << COL[col] << WHITE << " ";
+        cout << BLUE << COL[col] << WHITE << " ";
     }
         cout << endl;
     for (int i = 0; i < BOARD; i++) {
-            cout << YELLOW < ROW[i] << WHITE << " ";
+            cout << YELLOW << ROW[i] << WHITE << " ";
             for (int j = 0; j < BOARD; j++) {
                 if (board2[i][j] == '*') {
                     cout << GREEN << "* " << WHITE;
@@ -53,163 +50,119 @@ cout << "  ";
             cout << endl;
         }
     }
-}
 
 void set_ship1() {
-	string Carrier;
-	string BattleShip;
-	string Cruiser;
-	string Submarine;
-	string Destroyer;
-	
-	cout << "Player 1, place the cordinates to place your Carrier (Format: 'A5')" << endl;
-	printBoard();
-	for (int i = 0; i < 5; i++) {
-		getline(cin, Carrier);
-		if (Carrier.length() < 2 or Carrier.length() > 3  or isdigit(Carrier[0]) or Carrier[0] < 'A' or Carrier[0] > 'J' or stoi(Carrier.substr(1)) < 1 or stoi(Carrier.substr(1)) > BOARD)  {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-			i--;
+    vector<string> ships = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"};
+    vector<int> ships_size = {5, 4, 3, 3, 2};
+    int i = 0;
+    while(i < ships.size()) {
+        string ship = ships[i];
+        int size = ships_size[i];
+		cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << WHITE << endl;
+		cout << GREEN << "Player 1" << WHITE << " place the cordinate to place your " << ship << " (Format: 'A5')" << endl;
+        printBoard();
+        string user;
+		getline(cin, user);
+        if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {  
+		cout << "ERROR: MUST USE VALID INPUT" << endl; 
+		  continue;
+       	   }
+        int row = user[0] - 'A';
+        int col = stoi(user.substr(1)) - 1;
+        string choice;
+        cout << "Type 'H' for horizontal or 'V' for vertical'" << endl;
+        getline(cin, choice);
+        if (choice.length() > 1 or choice.length() < 1 or (choice != "H" and choice != "V")) { 
+            cout << "INVALID INPUT: Please enter 'H' or 'V'\n"; 
+			//getline(cin, choice);
 			continue;
-      	}
-		int row = Carrier[0] - 'A';
-		int col = stoi(Carrier.substr(1));
-		col = col - 1;
-		board[row][col] = '*';
+        }
+        if (choice == "H") {
+            for (int j = col; j < col + size; j++) {
+                if (j >= BOARD or board2[row][j] == '*') {
+                    cout << "ERROR: SHIPS MUST STAY IN THE MAP AND CANNOT OVERLAP" << endl;
+                    j = col - 1;
+                    //continue;
+					getline(cin, choice);
+                }
+                else board[row][j] = '*';
+            }
+        }
+        if (choice == "V") {
+            for (int j = row; j < row + size; j++) {
+                if (j >= BOARD || board2[j][col] == '*') {
+                    cout << "ERROR: SHIPS MUST STAY IN THE MAP AND CANNOT OVERLAP" << endl;
+                    j = row - 1;
+                    //continue;
+					return;
+                }
+                else board[j][col] = '*';
+            }
+        }
+        i++;
+		if (i == 5) { 
+		cout << "Player 1, this is your board! GOODLUCK!" << endl;
+		printBoard();
+		break;
+    	}
 	}
-	printBoard();
-	cout << "Player 1, place the cordinates for your Battleship (Format: 'A5')" << endl;
-	for (int i = 0; i < 4; i++) {
-		getline(cin, BattleShip);
-		if (BattleShip.length() < 2 or BattleShip.length() > 3 or isdigit(BattleShip[0]) or BattleShip[0] < 'A' or BattleShip[0] > 'J' or stoi(BattleShip.substr(1)) < 1 or stoi(BattleShip.substr(1)) > BOARD) {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-			i--;
-			continue;
-		}
-		int row = BattleShip[0] - 'A';
-		int col = stoi(BattleShip.substr(1));
-		col = col - 1;
-		board[row][col] = '*';
-	}
-	printBoard();
-	cout << "Player 1, place the cordinates for your Cruiser (Format: 'A5')" << endl;
-	for (int i = 0; i < 3; i++) {
-		getline(cin, Cruiser);
-		if (Cruiser.length() <  2 or Cruiser.length() > 3 or isdigit(Cruiser[0]) or Cruiser[0] < 'A' or Cruiser[0] > 'J' or stoi(Cruiser.substr(1)) < 1 or stoi(Cruiser.substr(1)) > BOARD) {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-			i--;
-			continue;
-		}
-		int row = Cruiser[0] - 'A';
-		int col = stoi(Cruiser.substr(1));
-        col = col - 1;
-		board[row][col] = '*';
-  }
-	printBoard();
-	cout << "Player 1, place the cordinates for your Submarine (Format: 'A5')" << endl;
-	for (int i = 0; i < 3; i++) {
-		getline(cin, Submarine);
-		if (Submarine.length() < 2 or Submarine.length() > 3 or isdigit(Submarine[0]) or Submarine[0] < 'A' or Submarine[0] > 'J' or stoi(Submarine.substr(1)) < 1 or stoi(Submarine.substr(1)) > BOARD) {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-			i--;
-			continue;
-		}
-		int row = Submarine[0] - 'A';
-		int col = stoi(Submarine.substr(1));
-        col = col - 1;
-		board[row][col] = '*';
-	}
-	printBoard();
-	cout << "Player 1, place the cordinates for your Destroyer (Format: 'A5')" << endl;
-	for (int i = 0; i < 2; i++) {
-		getline(cin, Destroyer); 
-		if (Destroyer.length() < 2 or Destroyer.length() > 3 or isdigit(Destroyer[0]) or Destroyer[0] < 'A' or Destroyer[0] > 'J' or stoi(Destroyer.substr(1)) < 1 or stoi(Destroyer.substr(1)) > BOARD) {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-			i--;
-			continue;
-		}
-		 int row = Destroyer[0] - 'A';
-         int col = stoi(Destroyer.substr(1));
-         col = col - 1;
-         board[row][col] = '*';
-	
-	}
-	printBoard();
 }
-
+	
 void set_ship2() {
- string Carrier;
-    string BattleShip;
-    string Cruiser;
-    string Submarine;
-    string Destroyer;
-
-    cout << "Player 2, chose the cordinates to place your Carrier (Format: 'A5')" << endl;
-    for (int i = 0; i < 5; i++) {
-        getline(cin, Carrier);
-        if (Carrier.length() != 2 or isdigit(Carrier[0]) or Carrier[0] < 'A' or Carrier[0] > 'J' or stoi(Carrier.substr(1)) < 1 or stoi(Carrier.substr(1)) > BOARD) {
-            cout << "ERROR: MUST USE VALID INPUT" << endl;
-            i--;
+	 vector<string> ships = {"Carrier", "Battleship", "Cruiser", "Submarine", "Destroyer"};
+    vector<int> ships_size = {5, 4, 3, 3, 2};
+    int i = 0;
+    while(i < ships.size()) {
+        string ship = ships[i];
+        int size = ships_size[i];
+        cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << WHITE << endl;
+        cout << RED << "Player 2" << WHITE << " place the cordinate to place your " << ship << " (Format: 'A5')" << endl;
+        printBoard2();
+        string user;
+        getline(cin, user);
+        if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {
+        cout << "ERROR: MUST USE VALID INPUT" << endl;
+          continue;
+           }
+        int row = user[0] - 'A';
+        int col = stoi(user.substr(1)) - 1;
+        string choice;
+        cout << "Type 'H' for horizontal or 'V' for vertical'" << endl;
+        getline(cin, choice);
+        if (choice.length() > 1 or choice.length() < 1 or (choice != "H" and choice != "V")) {
+            cout << "INVALID INPUT: Please enter 'H' or 'V'\n";
+            //getline(cin, choice);
             continue;
         }
-
-        int row = Carrier[0] - 'A';
-        int col = stoi(Carrier.substr(1));
-        col = col - 1;
-		board2[row][col] = '*';
-    }
-    cout << "Player 2, place the cordinates for your Battleship (Format: 'A5')" << endl;
-    for (int i = 0; i < 4; i++) {
-        getline(cin, BattleShip);
-        if (BattleShip.length() != 2 or isdigit(BattleShip[0]) or BattleShip[0] < 'A' or BattleShip[0] > 'J' or stoi(BattleShip.substr(1)) < 1 or stoi(BattleShip.substr(1)) > BOARD) {
-            cout << "ERROR: MUST USE VALID INPUT" << endl;
-            i--;
-            continue;
+        if (choice == "H") {
+            for (int j = col; j < col + size; j++) {
+                if (j >= BOARD or board2[row][j] == '*') {
+                    cout << "ERROR: SHIPS MUST STAY IN THE MAP AND CANNOT OVERLAP" << endl;
+                    j = col - 1;
+                    continue;
+                }
+                else board2[row][j] = '*';
+            }
         }
-        int row = BattleShip[0] - 'A';
-        int col = stoi(BattleShip.substr(1));
-        col = col - 1;
-		board2[row][col] = '*';
-    }
-    cout << "Player 2, place the cordinates for your Cruiser (Format: 'A5')" << endl;
-    for (int i = 0; i < 3; i++) {
-        getline(cin, Cruiser);
-        if (Cruiser.length() != 2 or isdigit(Cruiser[0]) or Cruiser[0] < 'A' or Cruiser[0] > 'J' or stoi(Cruiser.substr(1)) < 1 or stoi(Cruiser.substr(1)) > BOARD) {
-            cout << "ERROR: MUST USE VALID INPUT" << endl;
-            i--;
-            continue;
+        if (choice == "V") {
+            for (int j = row; j < row + size; j++) {
+                if (j >= BOARD or board2[j][col] == '*') {
+                    cout << "ERROR: SHIPS MUST STAY IN THE MAP AND CANNOT OVERLAP" << endl;
+                    j = row - 1;
+                    continue;
+                }
+                else board2[j][col] = '*';
+            }
         }
-        int row = Cruiser[0] - 'A';
-        int col = stoi(Cruiser.substr(1));
-        col = col - 1;
-		board2[row][col] = '*';
-    }
-    cout << "Player 2, place the cordinates for your Submarine (Format: 'A5')" << endl;
-    for (int i = 0; i < 3; i++) {
-        getline(cin, Submarine);
-        if (Submarine.length() != 2 or isdigit(Submarine[0]) or Submarine[0] < 'A' or Submarine[0] > 'J' or stoi(Submarine.substr(1)) < 1 or stoi(Submarine.substr(1)) > BOARD) {
-            cout << "ERROR: MUST USE VALID INPUT" << endl;
-            i--;
-            continue;
+        i++;
+        if (i == 5) {
+        cout << RED << "Player 2" << WHITE << " this is your board! GOODLUCK!" << endl;
+        printBoard2();
+        break;
         }
-        int row = Submarine[0] - 'A';
-        int col = stoi(Submarine.substr(1));
-        col = col - 1;
-		board2[row][col] = '*';
     }
-	  cout << "Player 2, place the cordinates for your Destroyer (Format: 'A5')" << endl;                                                                                                               
-        for (int i = 0; i < 2; i++) { 
-			getline(cin, Destroyer);
-	  		if (Destroyer.length() != 2 or isdigit(Destroyer[0]) or Destroyer[0] < 'A' or Destroyer[0] > 'J' or stoi(Destroyer.substr(1)) < 1 or stoi(Destroyer.substr(1)) > BOARD) {
-			cout << "ERROR: MUST USE VALID INPUT" << endl;
-            i--;
-            continue;
-		}
-	  	int row = Destroyer[0] - 'A';
-        int col = stoi(Destroyer.substr(1));
-        col = col - 1;
-		board2[row][col] = '*';
-	}
 }
+/*
 		void player1_board() {	
 			set_ship1();
 			cout << CYAN << "Player 1 this is your board!" << WHITE << endl;
@@ -245,7 +198,7 @@ void set_ship2() {
 				cout << endl;
 			}
 		}
-
+*/
 	void updateBoard(int row, int col) {
 		cout << "  ";
 		for (int col = 0; col < BOARD; col++) {
@@ -310,8 +263,8 @@ void set_ship2() {
 
 
 	void Battle_Ship() {
-		player1_board();
-		player2_board();
+		set_ship1();
+		set_ship2();
 		while (true) {
 			if (hits == 3) { 
 				cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
@@ -356,10 +309,6 @@ void set_ship2() {
 			updateBoard(row, col);
 			// I could seperate these 2 bc it is getting messy
 			// But it is working as intended so... yeah :D
-			if (misses2 == 10) {
-				cout << "YOU HAVE USED UP ALL YOUR MISSES!" << endl;
-				exit(1);
-			}
 			cout << endl;
 			cout << "Player 2 it is your turn!" << endl;
 			string choice3;
@@ -393,6 +342,8 @@ void set_ship2() {
    		 cout << " Cruiser(3 spaces)" << endl;
     	 cout << " Submarine(3 spaces)" << endl;
    	 	 cout << " Destoyer(2 spaces)" << endl;
+		//set_ship1();
+	//	set_ship2();
 		Battle_Ship();
 	   // player1_board();
 		//player2_board();
