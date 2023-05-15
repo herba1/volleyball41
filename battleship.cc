@@ -218,7 +218,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 		if (hits == 3) { 
 			cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
 			cin.ignore();
-			cout << "PLAYER 2 WINS" << endl;
+			cout << "PLAYER 1 WINS" << endl;
 			exit(1);
 		}
 		if (misses == 10) {
@@ -228,7 +228,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 		if (hits2 == 3) {
 			cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
 			cin.ignore();
-			cout << "PLAYER 1 WINS" << endl;
+			cout << "PLAYER 2 WINS" << endl;
 			exit(1);
 		}
 		if (misses2 == 10) {
