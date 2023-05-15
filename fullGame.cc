@@ -29,8 +29,14 @@ srand (time(0));    //cpp ref code
     shuffle_vector(qaDB);
     int qSet = 0;// used to traverse the question DB
 
-    set_ship1();
-    set_ship2();
-    Battle_Ship(qaDB, qSet);
-}
+	system("figlet 'WELCOME TO VOLLEYBATTLE SHIPARDY' | lolcat");
+   	 cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - -" << WHITE << endl;
+	 cout << MAGENTA << "INSTRUCTIONS" << WHITE << ": Each player will first start by placing their battle ships on their board" << endl;
+	 cout << "After that is complete: the game will start and it will work by who can answer C++ trivia questions the fastest" << endl;
+	 cout << "The faster player will receive 3 shots to hit a ship, first player to sink " << RED << "ALL" << WHITE << " their oppenents ships WINS!" << endl;
+	 cout << GREEN << "GOODLUCK TO ALL!" << WHITE << endl;
+	 set_ship1();
+	 set_ship2();
+	 Battle_Ship(qaDB, qSet);
+   }
 
