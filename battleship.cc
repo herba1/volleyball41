@@ -75,20 +75,36 @@ void set_ship1() {
 		string choice;
 		cout << "Type 'H' for horizontal or 'V' for vertical" << endl;
 		getline(cin, choice);
-		if (choice.length() > 1 or choice.length() < 1  or !isalpha(choice[0]) or (choice != "H" and choice != "V") or row + size > BOARD or col + size > BOARD or board[row][i] == '*' or board[i][col] == '*') { 
-			cout << RED <<  "ERROR: INPUT MUST BE VALID, MUST BE IN BOUNDS, AND CANNOT OVERLAP'\n" << WHITE; 
+		if (choice.length() > 1 or choice.length() < 1  or !isalpha(choice[0]) or (choice != "H" and choice != "V")) 	{ 
+			cout << RED <<  "ERROR: INVALID INPUT" << WHITE; 
 			continue;
 		}
 
 		if (choice == "H") {
 			for (int i = col; i < col + size; i++) {
-				board[row][i] = '*';
+				if (col + size > BOARD) {
+					cout <<  RED <<  "ERROR: MUST STAY IN BOUNDS" << WHITE << endl;
+					exit(1);
+				}
+				else if (board[row][i] == '*') {
+					cout << RED << "ERROR: SHIPS CANNOT OVERLAP" << WHITE << endl;
+					exit(1);
+				}
+				else board[row][i] = '*';
 			}
 		}
 
 		if (choice == "V") {
 			for (int i = row; i < row + size; i++) {
-				board[i][col] = '*';
+				if (row + size > BOARD) {
+				cout << RED <<  "ERROR: MUST STAY IN BOUNDS" << WHITE << endl;
+				exit(1);
+			}
+				else if (board[i][col] == '*') {
+				cout << RED << "ERROR: SHIPS CANNOT OVERLAP" << WHITE << endl;
+				exit(1);
+				}
+			 	else board[i][col] = '*';
 			}
 		}
 
@@ -122,26 +138,42 @@ void set_ship2() {
 		string choice;
 		cout << "Type 'H' for horizontal or 'V' for vertical" << endl;
 		getline(cin, choice);
-		if (choice.length() > 1 or choice.length() < 1  or !isalpha(choice[0]) or (choice != "H" and choice != "V") or row + size > BOARD or col + size > BOARD or board2[row][i] == '*' or board2[i][col] == '*') {
-			cout << RED <<  "ERROR: INPUT MUST BE VALID, MUST BE IN BOUNDS, AND CANNOT OVERLAP'\n" << WHITE;
+		if (choice.length() > 1 or choice.length() < 1  or !isalpha(choice[0]) or (choice != "H" and choice != "V")) {	
+				cout << RED <<  "ERROR: INPUT MUST BE VALID, MUST BE IN BOUNDS, AND CANNOT OVERLAP'\n" << WHITE;
 			continue;
 		}
 
-		if (choice == "H") {
-			for (int i = col; i < col + size; i++) {
-				board2[row][i] = '*';
-			}
-		}
+		 if (choice == "H") {
+            for (int i = col; i < col + size; i++) {
+                if (col + size > BOARD) {
+                    cout <<  RED <<  "ERROR: MUST STAY IN BOUNDS" << WHITE << endl;
+                    exit(1);
+                }
+                else if (board2[row][i] == '*') {
+                    cout << RED << "ERROR: SHIPS CANNOT OVERLAP" << WHITE << endl;
+                    exit(1);
+                }
+                else board2[row][i] = '*';
+            }
+        }
 
-		if (choice == "V") {
-			for (int i = row; i < row + size; i++) {
-				board2[i][col] = '*';
-			}
-		}
+        if (choice == "V") {
+            for (int i = row; i < row + size; i++) {
+                if (row + size > BOARD) {
+                cout << RED <<  "ERROR: MUST STAY IN BOUNDS" << WHITE << endl;
+                exit(1);
+            }
+                else if (board2[i][col] == '*') {
+                cout << RED << "ERROR: SHIPS CANNOT OVERLAP" << WHITE << endl;
+                exit(1);
+                }
+                else board2[i][col] = '*';
+            }
+        }
 
 		i++;
 		if (i == 5) {
-			cout << "Player 1, this is your board! GOODLUCK!" << endl;
+			cout << CYAN << "Player 2, this is your board! GOODLUCK!" << endl;
 			printBoard2();
 			break;
 		}
@@ -245,6 +277,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 		if(battleTurn == 1){
 			cout << "Player 1 it is your turn!" << endl;
 			cout << "You have 3 shots " << endl;
+			set_ship1();
 			for (int i = 0; i < 3; i++){
 				string choice1;
 				cout << "Enter a row to hit a ship (e.g A, B, C...J)" << endl;
@@ -276,6 +309,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 
 			cout << "Player 2 it is your turn!" << endl;
 			cout << "You get 3 Shots" << endl;
+			set_ship2();
 			for (int i = 0; i < 3; i++){
 				string choice3;
 				cout << "Enter a row to hit a ship (e.g A, B, C...J)" << endl;
