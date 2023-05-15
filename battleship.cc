@@ -244,7 +244,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 		int battleTurn = 0;// herb
 		cout << endl;
 		battleTurn = volley(qaDB,qSet);
-		cin.ignore();
+//		cin.ignore();
 		if(battleTurn == 1){
 			cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - -"<< WHITE << endl; 
 			cout << GREEN << "Player 1 it is your turn for BATTLESHIP!" << WHITE <<  endl;

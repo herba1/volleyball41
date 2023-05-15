@@ -136,13 +136,21 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 			cout << "NO ONE WINS OUT OF QUESTIONS...SORRY!" << endl;
 			return 0;
 		}
-		int input = 0;
+		//int input = 0;
 		correct  = print_Questions(qaDB,qSet);
 		if (turn == 0){
 			cout << "PLAYER 1 says:(choose a number 1 - 4):  " << endl;
 			// Use read, you don't have to stoi
-			input = read();
-			if (input < 1 or input > 4) cout << "BOO YOUU BAD ANSA \n";
+			int input = -1;
+			set_raw_mode(true);
+			while (true){
+			input = quick_read();
+			if(input == ERR)usleep(10'000);
+			else if (input > 0) break;
+			}
+			set_raw_mode(false);
+			input -= 48;
+			if (input < 1 or input > 4) cout << input << " BOO YOUU BAD ANSA \n";
 			if (input == correct){ 
 				cout << GREEN << "GOOD JOB PLAYER 1\n\n" << WHITE << endl;
 				qSet++;//If correct move vector up 1 to next question set This is so i can reshuffle the vector and q and A's
@@ -168,8 +176,18 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 		if (turn == 1){
 			cout << "PLAYER 2 says: " << endl;
 			// Use read, you don't have to stoi
-			input = read();
-			if (input < 1 or input > 4) cout << "BOO YOUU BAD ANSA \n";
+			
+			//input = read();
+			int input = -1;
+			set_raw_mode(true);
+			while (true){
+			input = quick_read();
+			if(input == ERR)usleep(10'000);
+			else if (input > 0)break;
+			}
+			set_raw_mode(false);
+			input -= 48;
+			if (input - 48 < 1 or input > 4) cout << input << " BOO YOUU BAD ANSA \n";
 			if (input == correct){ 
 				cout << CYAN << "GOOD JOB PLAYER 2 \n\n"<< WHITE <<endl;
 				qSet++;
