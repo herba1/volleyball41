@@ -7,10 +7,8 @@
 #include <string>
 #include <vector>
 #include <ctime>
-
 #include "colors.h"
 #include "read.h"
-
 using namespace std;
 using namespace std::chrono;
 
@@ -135,7 +133,7 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 	while (true){
 		auto start = system_clock::now();//start Player 1 time
 		if (qSet >= qaDB.size()){//Make sure question set doesnt go out of bounds
-			cout << "NO ONE WINS OUT OF QUESTIONS SORRY" << endl;
+			cout << "NO ONE WINS OUT OF QUESTIONS...SORRY!" << endl;
 			return 0;
 		}
 		int input = 0;
@@ -146,13 +144,13 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 			input = read();
 			if (input < 1 or input > 4) cout << "BOO YOUU BAD ANSA \n";
 			if (input == correct){ 
-				cout << GREEN << "good job PLAYER 1\n\n" << WHITE << endl;
+				cout << GREEN << "GOOD JOB PLAYER 1\n\n" << WHITE << endl;
 				qSet++;//If correct move vector up 1 to next question set This is so i can reshuffle the vector and q and A's
 				pts++;// activate the timer after someone gets a questions right
 
 			}
-			else {cout << RED << "wrong!" << WHITE << endl;
-				if (pts > 0 or pts2 > 0) {cout << "P1 Lost sorry!\n"; return 2;}
+			else {cout << RED << "WRONG!" << WHITE << endl;
+				if (pts > 0 or pts2 > 0) {cout << GREEN << "Player 1 " << WHITE << " Lost! Sorry!\n"; return 2;}
 			}
 			//if (fAns == 1){cout << "you answered to long dead!\n";break;} //LOSE SO LEAVE
 			turn = 1;
@@ -160,9 +158,9 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 		correct = 0;//reset correct answer
 		auto end = system_clock::now();//End Player 1 Time
 		duration<float> dur = end - start;// Save Player 1 Time
-		if (time < dur and pts2 > 0){cout << "u answered out of time noob" << endl; return 2;}// If P1 time was longer than saved time after someone answerd correctly first fail him
+		if (time < dur and pts2 > 0){cout << "You answered out of time noob" << endl; return 2;}// If P1 time was longer than saved time after someone answerd correctly first fail him
 		time = dur;// else save Player 1 time
-		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << " seconds" << endl;
+		if (pts > 0 or pts2 > 0)cout << "Time to beat " << duration_cast<seconds>(time).count() << " seconds" << endl;
 
 		correct = print_Questions(qaDB,qSet);
 
@@ -173,20 +171,20 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 			input = read();
 			if (input < 1 or input > 4) cout << "BOO YOUU BAD ANSA \n";
 			if (input == correct){ 
-				cout << GREEN << "good job PLAYER 2 \n\n"<< WHITE <<endl;
+				cout << CYAN << "GOOD JOB PLAYER 2 \n\n"<< WHITE <<endl;
 				qSet++;
 				pts2++;//same as above
 			}
-			else{ cout << RED << "wrong!" << WHITE << endl;
-				if (pts > 0 or pts2 > 0) {cout << "P2 Lost sorry!\n";  return 1;}
+			else{ cout << RED << "WRONG!" << WHITE << endl;
+				if (pts > 0 or pts2 > 0) {cout << CYAN << "Player 2 " << WHITE << " Lost! Sorry!\n";  return 1;}
 			}
 			turn = 0;
 		}	
 		auto end2 = system_clock::now();//end player 2 time
 		duration<float> dur2 = end2 - start2;// save P2 time
-		if (dur2 > time and pts > 0){ cout << "u ansard out of time" << " seconds" << endl; return 1;}
+		if (dur2 > time and pts > 0){ cout << " You answered out of time" << " seconds" << endl; return 1;}
 		time = dur2; // save P2 Time
-		if (pts > 0 or pts2 > 0)cout << "time to beat " << duration_cast<seconds>(time).count() << endl;
+		if (pts > 0 or pts2 > 0)cout << "Time to beat " << duration_cast<seconds>(time).count() << endl;
 	}
 
 }
