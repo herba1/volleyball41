@@ -41,7 +41,7 @@ template<typename T>
 void shuffle_vector(vector<T> &vec);
 int volley(vector<questionSet> &qaDB, int &qSet);
 int print_Questions(vector<questionSet> &vec, int x);
-
+/*
 int main(){
 	srand (time(0));	//cpp ref code
 	vector<questionSet> qaDB;
@@ -82,7 +82,7 @@ int main(){
 
 
 }
-
+*/
 // You could make this a member of the questionSet class..
 int print_Questions(vector<questionSet> &vec, int x){
 	cout << YELLOW << "--------------------------------------" << RESET << endl;
