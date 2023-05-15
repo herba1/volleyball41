@@ -107,7 +107,7 @@ void set_ship1() {
 
 		i++;
 		if (i == 5) { 
-			cout << "Player 1, this is your board! GOODLUCK!" << endl;
+			cout << GREEN << "Player 1, this is your board! GOODLUCK!" << WHITE << endl;
 			printBoard();
 			break;
 		}
@@ -170,7 +170,7 @@ void set_ship2() {
 
 		i++;
 		if (i == 5) {
-			cout << CYAN << "Player 2, this is your board! GOODLUCK!" << endl;
+			cout << CYAN << "Player 2, this is your board! GOODLUCK!" << WHITE << endl;
 			printBoard2();
 			break;
 		}
@@ -294,7 +294,7 @@ void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
 			exit(1);
         	}
             string user;
-            cout << GREEN << "Player 1 " << WHITE << " please enter a coordinate to hit" << endl;
+            cout << CYAN << "Player 2 " << WHITE << " please enter a coordinate to hit" << endl;
             getline (cin, user);
             if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {
             cout << RED << "ERROR: MUST USE A VALID COORDINATE"  << WHITE << endl;
