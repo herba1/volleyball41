@@ -2,11 +2,8 @@
 #include "colors.h"
 #include <cstdlib>
 #include <vector>
-
 #include"newvolley.cc"
-
 using namespace std;
-
 
 const int BOARD = 10;
 int COL[BOARD] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -62,8 +59,8 @@ void set_ship1() {
 		string ship = ships[i];
 		int size = ships_size[i];
 		cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << WHITE << endl;
-		cout << GREEN << "Player 1" << WHITE << " place the cordinate to place your " << ship << " with a size of " << size  << " spaces (Format: 'A5')" << endl;
 		printBoard();
+		cout << GREEN << "Player 1" << WHITE << " place the cordinate to place your " << GREEN << ship << WHITE <<  " that takes up " << size  << " spaces (Format: 'A5')" << endl;
 		string user;
 		getline(cin, user);
 		if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {  
@@ -125,8 +122,8 @@ void set_ship2() {
 		string ship = ships[i];
 		int size = ships_size[i];
 		cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -" << WHITE << endl;
-		cout << CYAN << "Player 2" << WHITE << " place the cordinate to place your " << ship << " with a size of " << size  << " spaces (Format: 'A5')" << endl;
 		printBoard2();
+		cout << CYAN << "Player 2" << WHITE << " place the coordinate to place your " << CYAN << ship << WHITE << " that takes up " << size  << " spaces (Format: 'A5')" << endl;
 		string user;
 		getline(cin, user);
 		if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {
@@ -243,114 +240,74 @@ void updateBoard2(int row2, int col2) {
 
 
 void Battle_Ship(vector<questionSet> &qaDB, int &qSet) {
-	//set_ship1(); //herb
-	//set_ship2();	// herb
-
-	while (true) {
-		if (hits == 3) { 
-			cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
-			cin.ignore();
-			cout << "PLAYER 1 WINS" << endl;
-			exit(1);
-		}
-		if (misses == 10) {
-			cout << "YOU HAVE USED UP ALL YOUR MISSES!" << endl;
-			exit(1);
-		}
-		if (hits2 == 3) {
-			cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
-			cin.ignore();
-			cout << "PLAYER 2 WINS" << endl;
-			exit(1);
-		}
-		if (misses2 == 10) {
-			cout << "YOU HAVE USED UP ALL YOUR MISSES!" << endl;
-			exit(1);
-		}
-		// default to player one
-
+		while (true) {
 		int battleTurn = 0;// herb
 		cout << endl;
 		battleTurn = volley(qaDB,qSet);
 		cin.ignore();
-
 		if(battleTurn == 1){
-			cout << "Player 1 it is your turn!" << endl;
+			cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - -"<< WHITE << endl; 
+			cout << GREEN << "Player 1 it is your turn for BATTLESHIP!" << WHITE <<  endl;
 			cout << "You have 3 shots " << endl;
-			set_ship1();
-			for (int i = 0; i < 3; i++){
-				string choice1;
-				cout << "Enter a row to hit a ship (e.g A, B, C...J)" << endl;
-				getline(cin, choice1);
-				if (choice1.length() != 1 or isdigit(choice1[0]) or choice1 < "A" or choice1 > "J") {
-					cout << "ERROR, MUST USE VALID CHAR" << endl;
-					continue;	
-				} 
-
-				int choice2;
-				cout << "Enter a col to hit a ship (e.g 1, 2, 3...10) " << endl;
-				cin >> choice2;
-				if (choice2 < 1 or choice2 > 10) {
-					cout << "ERROR: MUST USE VALID COL" << endl;
-					continue;
-				} 
-				int row = choice1[0] - 'A'; 
-				int col = choice2 - 1;   
-				cout << "Your cordinates are: " << choice1 << choice2 << endl;
-				cin.ignore();
-				updateBoard(row, col);
-				// I could seperate these 2 bc it is getting messy
-				// But it is working as intended so... yeah :D
-				cout << endl;
+			int i = 0;
+			while (i < 3) {
+			 if (hits == 3) {
+            cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
+            cin.ignore();
+            cout << GREEN << "PLAYER 1 WINS" << WHITE <<  endl;
+            exit(1);
+        	}
+        	if (misses == 10) {
+            cout << "YOU HAVE USED UP ALL YOUR MISSES!" << endl;
+            cout << CYAN << "PLAYER 2 WINS" << WHITE << endl;
+			exit(1);
+        	}	
+			string user;
+			cout << GREEN << "Player 1 " << WHITE << " please enter a coordinate to hit" << endl; 
+			getline (cin, user);
+			if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {
+			cout << RED << "ERROR: MUST USE A VALID COORDINATE"  << WHITE << endl;
+			continue;
+			}
+			int row = user[0] - 'A';
+	     	int col = stoi(user.substr(1)) - 1;
+			updateBoard(row, col);
+			i++;
 			}
 		}
-		if (battleTurn == 1) continue;//after it runs go back to answer jeopardy
+            if  (battleTurn == 1)  continue;//after it runs go back to answer jeopardy
 		if (battleTurn == 2){
-
-			cout << "Player 2 it is your turn!" << endl;
+			cout << YELLOW << "- - - - - - - - - - - - - - - - - - - - - -"<< WHITE << endl;
+			cout << CYAN <<"Player 2 it is your turn for BATTLESHIP!" << WHITE << endl;
 			cout << "You get 3 Shots" << endl;
-			set_ship2();
-			for (int i = 0; i < 3; i++){
-				string choice3;
-				cout << "Enter a row to hit a ship (e.g A, B, C...J)" << endl;
-				getline(cin, choice3);
-				if (choice3.length() != 1 or isdigit(choice3[0]) or choice3 < "A" or choice3 > "J") {
-					cout << "ERROR, MUST USE VALID CHAR" << endl;
-					continue;
-				}
-				int choice4;
-				cout << "Enter a col to hit a ship (e.g 1, 2, 3...10) " << endl;
-				cin >> choice4;
-				if (choice4 < 1 or choice4 > 10) {
-					cout << "ERROR: MUST USE VALID COL" << endl;
-					continue;
-				}
-				int row2 = choice3[0] - 'A';
-				int col2 = choice4 - 1;    // convert column number to index
-				cout << "Your cordinates are: " << choice3 << choice4 << endl;
-				cin.ignore();
-				updateBoard2(row2, col2);
+			 int i = 0;
+            while (i < 3) {
+			 if (hits2 == 3) {
+            cout << "ALL SHIPS ARE DESTROYED, ABANDONED SHIP" << endl;
+            cin.ignore();
+            cout << CYAN << "PLAYER 2 WINS" << WHITE <<  endl;
+            exit(1);
+        	}
+        	if (misses2 == 10) {
+            cout << "YOU HAVE USED UP ALL YOUR MISSES!" << endl;
+            cout << GREEN << "PLAYER 1 WINS" << WHITE << endl; 
+			exit(1);
+        	}
+            string user;
+            cout << GREEN << "Player 1 " << WHITE << " please enter a coordinate to hit" << endl;
+            getline (cin, user);
+            if (user.length() < 2 or user.length() > 3 or !isalpha(user[0]) or !isdigit(user[1]) or (user.length() == 3 and !isdigit(user[2])) or user[0] < 'A' or user[0] > 'J' or stoi(user.substr(1)) < 1 or stoi(user.substr(1)) > BOARD) {
+            cout << RED << "ERROR: MUST USE A VALID COORDINATE"  << WHITE << endl;
+            continue;
+                }
+            int row2 = user[0] - 'A';
+            int col2 = stoi(user.substr(1)) - 1;
+            updateBoard2(row2, col2);
+            i++;
 			}
 		}
 		if (battleTurn == 2) continue; // same as above
-		else if(battleTurn == 0) {cout << "draw\n"; exit(1);}
-		else cout << "volley fail check me" << endl;
+		else if(battleTurn == 0) {cout << "DRAW\n"; exit(1);}
+		else cout << "Volley fail check me" << endl;
 	}
-
 }
-
-/*
-   int main() {
-   system("figlet 'WELCOME TO BATTLESHIP' | lolcat");
-   cout << "These are Battle-Ships you will use for the game: " << endl;
-   cout << " Carrier(5 spaces)" << endl;
-   cout << " Battleship(4 spaces)" << endl;
-   cout << " Cruiser(3 spaces)" << endl;
-   cout << " Submarine(3 spaces)" << endl;
-   cout << " Destoyer(2 spaces)" << endl;
-//	set_ship1();
-set_ship2();
-//	Battle_Ship();
-// player1_board();
-//player2_board();
-}*/
