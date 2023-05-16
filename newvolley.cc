@@ -89,6 +89,7 @@ int print_Questions(vector<questionSet> &vec, int x){
 		else if (vec.at(x).get_q().at(i) == '\\' and vec.at(x).get_q().at(i+1) == 'n' ) continue;
 		else cout << vec.at(x).get_q().at(i);
 	}
+	
 	cout << endl;
 	vector<int> random{1,2,3,4};
 	// This is my way of doing randoms.. 
