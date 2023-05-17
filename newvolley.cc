@@ -9,6 +9,7 @@
 #include <ctime>
 #include "colors.h"
 #include "read.h"
+#include<gtest/gtest.h>
 using namespace std;
 using namespace std::chrono;
 
@@ -39,12 +40,15 @@ template<typename T>
 void shuffle_vector(vector<T> &vec);
 int volley(vector<questionSet> &qaDB, int &qSet);
 int print_Questions(vector<questionSet> &vec, int x);
-/*
-int main(){
-	srand (time(0));	//cpp ref code
+
 	vector<questionSet> qaDB;
-	// Why? there's only one question database..
-	// const string file = read("enter a file\n");
+/*
+
+int main(int argc, char** argv){
+	testing::InitGoogleTest(&argc, argv);
+	srand (time(0));	//cpp ref code
+						// Why? there's only one question database..
+						// const string file = read("enter a file\n");
 
 	ifstream fs("questions.txt");
 	if (!fs){ cout << "error " << endl; exit(1);}
@@ -68,28 +72,34 @@ int main(){
 
 	int qSet = 0;// used to traverse the question DB
 
-	// You need to fix that, I tired fixing it but it would be way to much..
-	// fixed i think bruhaps?
 
-	int outcome = 0;
-	outcome = volley(qaDB,qSet);
-	if (outcome == 2) cout << "Player 2 gets 3 shots" << endl;
-	else if (outcome == 1) cout << "Player 1 gets 3 shots" << endl;
-	else if (outcome == -1) cout << "DRAW" << endl;
-	else if (outcome == 0) cout << "NO ONE WINS AHAHAHAHAHAHAHAHA" << endl;
+	return RUN_ALL_TESTS();
 
-
-}
+}*/
+/*
+	TEST(printQuestions, BadTest) {
+		EXPECT_EQ(print_Questions(qaDB, -1), 0);
+		EXPECT_EQ(print_Questions(qaDB, -2'000'000'000), 0);
+		EXPECT_EQ(print_Questions(qaDB, qaDB.size()+1), 0);
+		EXPECT_EQ(print_Questions(qaDB, qaDB.size()+90), 0);
+		EXPECT_EQ(print_Questions(qaDB, qaDB.size()+10000000), 0);
+	}
+	TEST(printQuestions, GoodTest) {
+		EXPECT_EQ(print_Questions(qaDB, 0), 1 or 2 or 3 or 4);//test min
+		EXPECT_EQ(print_Questions(qaDB, 13), 1 or 2 or 3 or 4);//test normal
+		EXPECT_EQ(print_Questions(qaDB, qaDB.size()-1), 1 or 2 or 3 or 4);//test max
+	}
 */
 // You could make this a member of the questionSet class..
 int print_Questions(vector<questionSet> &vec, int x){
+	if (x<0 or x >= vec.size())return 0;//out of questions 
 	cout << YELLOW << "--------------------------------------" << RESET << endl;
 	for(int i = 0; i < vec.at(x).get_q().size(); i++){
 		if (vec.at(x).get_q().at(i) == 'n' and vec.at(x).get_q().at(i-1) == '\\' ) cout << endl;
 		else if (vec.at(x).get_q().at(i) == '\\' and vec.at(x).get_q().at(i+1) == 'n' ) continue;
 		else cout << vec.at(x).get_q().at(i);
 	}
-	
+
 	cout << endl;
 	vector<int> random{1,2,3,4};
 	// This is my way of doing randoms.. 
@@ -99,7 +109,7 @@ int print_Questions(vector<questionSet> &vec, int x){
 	int r3 = random.at(2);
 	int r4 = random.at(3);
 	int correct = 0;// used to echo the correct choice with int input
-	// I made it look nicer..
+					// I made it look nicer..
 	cout << YELLOW << "--------------------------------------" << RESET << endl;
 	cout << GREEN << "1. ";
 	if (r == 1){ cout << vec.at(x).get_a1() << endl; correct = 1;}
@@ -125,6 +135,8 @@ int print_Questions(vector<questionSet> &vec, int x){
 	return correct;
 }
 
+
+
 int volley(vector<questionSet> &qaDB, int &qSet){
 	int turn = 0;
 	duration<float> time {60s};//VARIABLE TO SAVE TIME DURATION SET TO 60 INITIALLY
@@ -132,8 +144,8 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 	int pts2 = 0;//used to check who right answers first
 	int correct = 0;
 	while (true){
-		auto start = system_clock::now();//start Player 1 time
-		if (qSet >= qaDB.size()){//Make sure question set doesnt go out of bounds
+		auto start = system_clock::now();//start Player 1 t4ime
+		if (qSet >= qaDB.size() or qSet < 0){//Make sure question set doesnt go out of bounds
 			cout << "NO ONE WINS OUT OF QUESTIONS...SORRY!" << endl;
 			return 0;
 		}
@@ -145,9 +157,9 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 			int input = -1;
 			set_raw_mode(true);
 			while (true){
-			input = quick_read();
-			if(input == ERR)usleep(10'000);
-			else if (input > 0) break;
+				input = quick_read();
+				if(input == ERR)usleep(10'000);
+				else if (input > 0) break;
 			}
 			set_raw_mode(false);
 			input -= 48;
@@ -177,14 +189,14 @@ int volley(vector<questionSet> &qaDB, int &qSet){
 		if (turn == 1){
 			cout << "PLAYER 2 says: " << endl;
 			// Use read, you don't have to stoi
-			
+
 			//input = read();
 			int input = -1;
 			set_raw_mode(true);
 			while (true){
-			input = quick_read();
-			if(input == ERR)usleep(10'000);
-			else if (input > 0)break;
+				input = quick_read();
+				if(input == ERR)usleep(10'000);
+				else if (input > 0)break;
 			}
 			set_raw_mode(false);
 			input -= 48;
